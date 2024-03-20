@@ -1,17 +1,28 @@
 package view;
 
+import model.entity.transaction.impl.AccountTransaction;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
-public class ConsoleWriter {
+public class AccountView {
+    public static final String MENU = """
+            1. Пополнить счет
+            2. Снять деньги
+            3. Проверить баланс
+            4. История транзакций
+            5. Выход
+            """;
+    private final Scanner scanner;
 
-    public void greetings(){
-        System.out.println("Добро пожаловать в приложение \"Банковский счет\"!\n" +
-                            "1. Пополнить счет\n" +
-                            "2. Снять деньги\n" +
-                            "3. Проверить баланс\n" +
-                            "4. История транзакций\n" +
-                            "5. Выход\n");
+    public AccountView(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    public void printMenu(){
+        System.out.println(MENU);
     }
 
     public void error(int operationID) {
@@ -30,12 +41,12 @@ public class ConsoleWriter {
         }
     }
 
-    public String receiveOperationID(Scanner scanner){
+    public String receiveOperationID(){
         System.out.println( "Выберите действие (введите номер):");
         return scanner.nextLine();
     }
 
-    public String topUpYourAccountRead(Scanner scanner){
+    public String topUpYourAccountRead(){
         System.out.println("Введите сумму для пополнения: ");
         return scanner.nextLine();
     }
@@ -44,13 +55,13 @@ public class ConsoleWriter {
         System.out.println("Баланс успешно пополнен на " + amount);
     }
 
-    public String withdrawMoneyRead(Scanner scanner) {
+    public String withdrawMoneyRead() {
         System.out.println("Введите сумму для снятия: ");
         return scanner.nextLine();
     }
 
     public void withdrawMoneyWrite(int amount, int balance) {
-        System.out.println("Со счета снято " + amount + " руб.");
+        System.out.println("Со счета снято " + -amount + " руб.");
         System.out.println("Баланс: " + balance + ".");
     }
 
@@ -58,10 +69,11 @@ public class ConsoleWriter {
         System.out.println("Баланс на счете: " + amount);
     }
 
-    public void transactionHistory(ArrayList<String> history) {
+    public void transactionHistory(List<AccountTransaction> history) {
         System.out.println("История транзакций: ");
-        for (String str : history) {
-            System.out.println(str);
+        for (AccountTransaction accountTransaction : history) {
+            System.out.println(accountTransaction.getAmount());
+            System.out.println(accountTransaction.getTransactionDate());
         }
     }
 
